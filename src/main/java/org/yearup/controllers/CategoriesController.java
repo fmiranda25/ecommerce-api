@@ -15,18 +15,20 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("categories")
 @CrossOrigin
 public class CategoriesController {
-    private CategoryService categoryService;
-    private ProductService productService;
+    private final CategoryService categoryService;
+    private final ProductService productService;
 
 
     // create an Autowired constructor to inject the categoryService and productService
     @Autowired
-    public CategoriesController (CategoryService categoryService) {
+    public CategoriesController (CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
+        this.productService = productService;
     }
+
 
     // add the appropriate annotation for a get action
     @GetMapping
@@ -46,12 +48,11 @@ public class CategoriesController {
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
-    @GetMapping("/categories/{id}/products") //products/{id}
-    public ResponseEntity<Product> getProductsById(@PathVariable int categoryId) {
-        // get a list of product by categoryId
-        return productService.getById(categoryId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{categoryId}/products") //products/{id}
+    public ResponseEntity<List<Product>> getProductsById(@PathVariable int categoryId) {
+
+        List<Product> products = productService.listByCategoryId(categoryId);
+        return ResponseEntity.ok(products);
     }
 
     // add annotation to call this method for a POST action
@@ -68,7 +69,7 @@ public class CategoriesController {
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Optional<Category> updateCategory(@PathVariable int id, @RequestBody Category updatedCategory) {
+    public Category updateCategory(@PathVariable int id, @RequestBody Category updatedCategory) {
         // update the category by id and return the updated category (200 OK)
         if(categoryService.getById(id) == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

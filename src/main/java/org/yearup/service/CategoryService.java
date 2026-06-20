@@ -28,13 +28,18 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Optional<Category> update(int categoryId, Category updatedCategory) {
-        return categoryRepository.findById(categoryId).map(existing -> {
-            existing.setCategoryId(updatedCategory.getCategoryId());
-            existing.setName(updatedCategory.getName());
-            existing.setDescription(updatedCategory.getDescription());
-            return categoryRepository.save(existing);
-        });
+    public Category update(int categoryId, Category updatedCategory) {
+//        return categoryRepository.findById(categoryId).map(existing -> {
+//            existing.setCategoryId(updatedCategory.getCategoryId());
+//            existing.setName(updatedCategory.getName());
+//            existing.setDescription(updatedCategory.getDescription());
+//            return categoryRepository.save(existing);
+//        });
+        Category existing = categoryRepository.findById(categoryId).orElseThrow();
+        existing.setName(updatedCategory.getName());
+        existing.setDescription(updatedCategory.getDescription());
+        return categoryRepository.save(existing);
+
     }
 
     public void delete(int categoryId) {
