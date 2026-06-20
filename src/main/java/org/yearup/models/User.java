@@ -107,8 +107,7 @@ public class User {
       }
    }
 
-   public void addRole(String role)
-   {
+   public void addRole(String role) {
       String authority = role.trim().contains("ROLE_") ? role.trim() : "ROLE_" + role.trim();
       this.authorities.add(new Authority(authority));
    }
@@ -141,8 +140,7 @@ public class User {
    }
 
    @JsonIgnore
-   public String getRole()
-   {
+   public String getRole() {
       if(authorities.size() > 0)
       {
          for(Authority r: authorities)

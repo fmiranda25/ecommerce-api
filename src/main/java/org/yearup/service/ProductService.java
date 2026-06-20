@@ -7,17 +7,14 @@ import org.yearup.repository.ProductRepository;
 import java.util.List;
 
 @Service
-public class ProductService
-{
+public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository)
-    {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<Product> search(Integer categoryId, Double minPrice, Double maxPrice, String subCategory)
-    {
+    public List<Product> search(Integer categoryId, Double minPrice, Double maxPrice, String subCategory) {
         List<Product> products = categoryId != null
                 ? productRepository.findByCategoryId(categoryId)
                 : productRepository.findAll();
@@ -30,24 +27,20 @@ public class ProductService
                        .toList();
     }
 
-    public List<Product> listByCategoryId(int categoryId)
-    {
+    public List<Product> listByCategoryId(int categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    public Product getById(int productId)
-    {
+    public Product getById(int productId) {
         return productRepository.findById(productId).orElse(null);
     }
 
-    public Product create(Product product)
-    {
+    public Product create(Product product) {
         product.setProductId(0);
         return productRepository.save(product);
     }
 
-    public Product update(int productId, Product product)
-    {
+    public Product update(int productId, Product product) {
         Product existing = productRepository.findById(productId).orElseThrow();
         existing.setName(product.getName());
         existing.setPrice(product.getPrice());
@@ -59,8 +52,7 @@ public class ProductService
         return productRepository.save(existing);
     }
 
-    public void delete(int productId)
-    {
+    public void delete(int productId) {
         productRepository.deleteById(productId);
     }
 }

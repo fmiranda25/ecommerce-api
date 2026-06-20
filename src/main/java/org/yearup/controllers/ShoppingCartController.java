@@ -9,8 +9,7 @@ import java.security.Principal;
 
 // convert this class to a REST controller
 // only logged in users should have access to these actions
-public class ShoppingCartController
-{
+public class ShoppingCartController {
     // a shopping cart controller depends on the service layer
     private ShoppingCartService shoppingCartService;
     private UserService userService;
@@ -18,8 +17,7 @@ public class ShoppingCartController
 
 
     // each method in this controller requires a Principal object as a parameter
-    public ShoppingCart getCart(Principal principal)
-    {
+    public ShoppingCart getCart(Principal principal) {
         // get the currently logged in username
         String userName = principal.getName();
         // find database user by username
